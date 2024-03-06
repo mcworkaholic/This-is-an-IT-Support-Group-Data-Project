@@ -85,7 +85,6 @@ patterns = {
         " Ii ": " 2 ",
         " III ": " 3 ",
         " Iii ": " 3 ",
-         " I ": " 1 ",
         " II": " 2 ",
         " Ii": " 2 ",
         " III": " 3 ",
@@ -106,8 +105,8 @@ patterns = {
         " Level 2": " 2 ",
         " Level 3": " 3 ",
         " Level 1 & 2 ": " 1 & 2 ",
+         " Level 1 & 2": " 1 & 2 ",
         " Level 2 & 3 ": " 2 & 3 ",
-        " Level 1 & 2": " 1 & 2 ",
         " Level 2 & 3": " 2 & 3 ",
         " Tier 1 ": " 1 ",
         " Tier 2 ": " 2 ",
@@ -159,4 +158,10 @@ patterns = {
         "Senior ": " 3 ",
         "Sr ": " 3 ", 
         "Sr. ": " 3 ", 
+        "1St Line ": " 1 ",
+        "2Nd Line ": " 2 ",
+        "3Rd Line ": " 3 ",
+        "Intermediate ": " 2 ",
+        " Intermediate": " 2 ",
+
     }
