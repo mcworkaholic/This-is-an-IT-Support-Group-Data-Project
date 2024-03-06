@@ -197,11 +197,6 @@ def reformat_data(data, countries, us_states):
             city = original_location
             state = ""
 
-        # Prefix pay value with "$" if it doesn't already start with "$"
-        pay = item['pay']
-        if not pay.startswith("$"):
-            pay = "$" + pay
-
         # Initialize pay_type with a default value
         pay_type = "unknown"
         
