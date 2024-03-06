@@ -3,7 +3,7 @@ import re
 import googlemaps
 from dotenv import load_dotenv
 import os
-import csv
+import sqlite3
 
 # Load environment variables from .env file
 load_dotenv()
@@ -96,6 +96,9 @@ countries = [
 
 data_directory = "Data"
 
+# Define the new, modified file name
+modified_json_filename = "IT Professional Survey Responses - Fixed.json"
+
 # Step 1: Read the JSON file
 filename = "IT Professional Survey Responses.json"
 
@@ -148,8 +151,6 @@ def format_us_location(location, us_states):
 
     return city, state, country
 
-
-
 def reformat_us_data(data, us_states):
     reformatted_data = []
     for item in data:
@@ -185,32 +186,29 @@ def reformat_data(data, countries, us_states):
     reformatted_data = []
     for item in data:
         original_location = item['location']
-        # Corrected to include us_states as the third argument
         country = get_country_from_location(original_location, countries, us_states)
 
-        if country and country != "United States":
+        if country != "United States":
             city = original_location.replace(country, "").strip()
             state = "N/A"  # No state for non-U.S. locations
-        elif country == "United States":
-            city, state, _ = format_us_location(original_location, us_states)
         else:
-            city = original_location
-            state = ""
+            city, state, _ = format_us_location(original_location, us_states)
 
-        # Initialize pay_type with a default value
+        # Ensure 'pay' is defined within item before accessing it
+        pay = item.get('pay', '0')  # Default to '0' if 'pay' key does not exist
+
+        # Determine pay type based on the content of 'pay'
         pay_type = "unknown"
-        
         if "annually" in pay.lower():
             pay_type = "Salary"
         elif "hourly" in pay.lower():
             pay_type = "Hourly"
 
-        # Strip all characters except for "$", numbers, and "."
-        pay = re.sub(r'[^\d.$]', '', pay)
-        
+        # Clean 'pay' to only include numerical values and remove "$"
+        pay = re.sub(r'[^\d.]', '', pay)
+
         reformatted_item = {
             "title": item['title'].title(),
-            "original response": original_location,
             "city": city,
             "state": state,
             "country/region": country if country else "Unknown",
@@ -251,9 +249,6 @@ def process_data_with_guessing(data, google_maps_api_key):
 # for item in processed_data:
 #     print(json.dumps(item, indent=4))
 
-# Define the new, modified file name
-modified_json_filename = "IT Professional Survey Responses - Fixed.json"
-
 # Build the full path for the output file
 file_path_output = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
 
@@ -264,28 +259,49 @@ with open(file_path_output, 'w') as file:
 
 ################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 
-# # FINAL STEP, convert JSON to CSV for Tableau
-csv_file_name = "IT Professional Survey Responses.csv"
-csv_file_path = os.path.join(os.path.dirname(__file__), data_directory, csv_file_name)
+# FINAL STEP, convert JSON to Sqlite for further analysis
 
-# Correctly build the full path for the modified JSON file to ensure it can be loaded
-modified_json_file_path = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
+def insert_into_database(data, db_name="survey_responses.db"):
+    # Build the database path relative to the current file and the 'Data' directory
+    current_dir = os.path.dirname(__file__)  # Get the directory of the current script
+    db_path = os.path.join(current_dir, "Data", db_name)  # Append the 'Data' directory and database name
 
-# Load the JSON data from the modified file
-with open(modified_json_file_path, 'r', encoding='utf-8') as jsonfile:
-    data = json.load(jsonfile)
+    # Connect to the SQLite database at the specified path
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
 
-# Extract column names
-columns = data[0].keys()
+    # Create table with appropriate data types
+    c.execute('''CREATE TABLE IF NOT EXISTS responses
+                 (title TEXT, city TEXT, state TEXT, country_region TEXT, lat REAL, lon REAL, pay REAL, pay_type TEXT)''')
 
-# Write the JSON data to a CSV file
-with open(csv_file_path, 'w', newline='', encoding='utf-8') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=columns)
-    
-    # Write the column headers
-    writer.writeheader()
-    
-    # Write the JSON data as rows in the CSV
+    # Prepare insert statement, excluding 'original response' key
+    insert_stmt = '''INSERT INTO responses (title, city, state, country_region, lat, lon, pay, pay_type) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+
+    # Insert each record into the database
     for item in data:
-        writer.writerow(item)
+        values = (item['title'], item['city'], item['state'], item['country/region'], 
+                  item['lat'], item['lon'], item['pay'], item['pay type'])
+        c.execute(insert_stmt, values)
 
+    # Commit the transaction and close the connection
+    conn.commit()
+    conn.close()
+
+def read_processed_data_and_insert(db_name="survey_responses.db"):
+    # Define the modified file name and build the full path for the input file
+    file_path_input = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
+
+    # Ensure the 'Data' directory exists or create it
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), "Data")):
+        os.makedirs(os.path.join(os.path.dirname(__file__), "Data"))
+
+    # Read the processed data from the fixed JSON file
+    with open(file_path_input, 'r') as file:
+        processed_data = json.load(file)
+    
+    # Insert the processed data into the SQLite database
+    insert_into_database(processed_data, db_name)
+
+# Call the function to read from the fixed JSON and insert into SQLite
+read_processed_data_and_insert()
