@@ -165,3 +165,5 @@ patterns = {
         " Intermediate": " 2 ",
 
     }
+
+job_tiers = {}
