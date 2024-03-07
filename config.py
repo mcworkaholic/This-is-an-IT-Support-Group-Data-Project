@@ -163,6 +163,12 @@ patterns = {
         "3Rd Line ": " 3 ",
         "Intermediate ": " 2 ",
         " Intermediate": " 2 ",
+        "mid ": " 2 ",
+        "mid-level ": " 2 ",
+        " mid ": " 2 ",
+        " mid-level ": " 2 ",
+        " mid": " 2 ",
+        " mid-level": " 2 ",
 
     }
 
