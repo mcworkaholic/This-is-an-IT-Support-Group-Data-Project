@@ -35,6 +35,7 @@ WHERE pay_type = 'Hourly'
 Shows which states are major hubs for IT talent. */
 SELECT state, COUNT(*) AS professional_count
 FROM formatted_responses
+WHERE state != 'N/A' AND state IS NOT NULL
 GROUP BY state
 ORDER BY professional_count DESC;
 
@@ -69,11 +70,6 @@ FROM formatted_responses
 GROUP BY job_tier, pay_type
 ORDER BY job_tier, pay_type;
 
-/* This query identifies how many IT professionals are in urban versus rural settings,
-based on whether the 'city' field is populated. */
-SELECT CASE WHEN city = '' THEN 'Rural' ELSE 'Urban' END AS setting, COUNT(*) AS count
-FROM formatted_responses
-GROUP BY setting;
 
 /* This query calculates the average hourly wage for IT professionals,
 facilitating comparisons with salaried positions. */
