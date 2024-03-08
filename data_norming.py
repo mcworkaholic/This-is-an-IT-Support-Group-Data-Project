@@ -4,11 +4,10 @@ import os
 import sqlite3
 import requests
 import time
-from config import us_states, countries, patterns
+from config import us_states, countries, patterns, job_tiers
 
 # Keep track of the last request time
 last_request_time = None
-
 data_directory = "Data"
 
 # Define the new, modified file name
@@ -30,7 +29,6 @@ United_States_pattern = re.compile(r'\b(USA|US|United\s+States(\s+of\s+America)?
 # Enhanced regex pattern to include state names and abbreviations for flexible matching
 state_patterns = [f"\\b{re.escape(code)}\\b|\\b{re.escape(full_name)}\\b" for code, full_name in us_states.items()]
 state_regex = re.compile("|".join(state_patterns), re.IGNORECASE)
-
 
 def format_us_location(location, us_states):
     # Initialize variables
@@ -97,77 +95,106 @@ def get_country_from_location(location, countries, us_states):
         return "United States"
     return "Unknown"
 
-def format_professional_title(title):
-    # Capitalize occurrences of " it " and " i.t. " surrounded by spaces
-    title = re.sub(r'\b(it)\b', 'IT', title, flags=re.IGNORECASE)
-    title = re.sub(r'\b(i\.t\.)\b', 'I.T.', title, flags=re.IGNORECASE)
+# PERFECT :)
+def format_professional_title(title, patterns):
+    # Use lookbehind and lookahead to ensure spaces are preserved around "IT" and "I.T."
+    normalized_title = re.sub(r'(?<=\b)(it)(?=\b)', 'IT', title, flags=re.IGNORECASE)
+    normalized_title = re.sub(r'(?<=\b)(i\.t\.)(?=\b)', 'I.T.', normalized_title, flags=re.IGNORECASE)
 
     extracted_numbers = []
+    job_tier = "N/A"
+
+    # Handling Roman numerals
+    roman_numerals = {'III': 3, 'II': 2, 'I': 1}
+    for roman, arabic in roman_numerals.items():
+        if re.search(f'\\b{roman}\\b', normalized_title, re.IGNORECASE):
+            extracted_numbers.append(arabic)
+            normalized_title = re.sub(f'\\b{roman}\\b', '', normalized_title)  # Remove Roman numeral
+            job_tier = str(arabic)
+
+    # Extract numeric values directly from the title and patterns
+    direct_numbers = re.findall(r'\b\d+\b', normalized_title)
+    for number in direct_numbers:
+        extracted_numbers.append(int(number))
 
     for pattern, replacement in patterns.items():
-        # Check start
-        if title.startswith(pattern.strip()):
-            extracted_numbers.append(replacement.strip())
-            title = title.replace(pattern, " ", 1)
-        # Check end
-        elif title.endswith(pattern.strip()):
-            extracted_numbers.append(replacement.strip())
-            title = title[:title.rfind(pattern)] + title[title.rfind(pattern):].replace(pattern, " ", 1)
+        if re.search(pattern, normalized_title, re.IGNORECASE):
+            extracted_numbers.append(int(replacement))
+            normalized_title = re.sub(pattern, '', normalized_title)  # Remove pattern
+            job_tier = replacement
 
-        # Check middle occurrences with space padding
-        padded_pattern = " " + pattern.strip() + " "
-        if padded_pattern in title:
-            extracted_numbers.append(replacement.strip())
-            title = title.replace(padded_pattern, " ", 1)
-
-        # Remove additional occurrences carefully
-        while pattern in title:
-            if pattern.strip() in title:
-                extracted_numbers.append(replacement.strip())
-                title = title.replace(pattern, " ", 1)
-            else:
-                break  # Avoid infinite loop if no exact match is found
-
-    # Clean up any extra spaces and append extracted numbers not previously in the title
-    title = " ".join(title.split())  # Removes extra spaces
+    # Determine the highest job tier from extracted numbers
     if extracted_numbers:
-        # Append extracted numbers, ensuring no duplicates and maintaining order
-        title += " " + " ".join(sorted(set(extracted_numbers), key=extracted_numbers.index))
+        highest_tier = max(extracted_numbers)
+        job_tier = str(highest_tier)
+        # Append the highest tier to the title if not already present
+        if not normalized_title.endswith(job_tier):
+            normalized_title = f"{normalized_title} {job_tier}".strip()
 
-    return title.strip()
+    normalized_title = re.sub(r'\s+', ' ', normalized_title).strip()  # Clean up extra spaces
 
-def reformat_data(data, countries, us_states):
+    # Convert numbers back to strings for consistency in the returned list
+    extracted_numbers_str = list(map(str, set(extracted_numbers)))
+
+    return normalized_title, extracted_numbers_str, job_tier
+
+
+def determine_job_tier(extracted_numbers):
+    # Convert extracted strings to floats, filtering for valid tiers within the range 1 to 3
+    valid_tiers = [float(num) for num in extracted_numbers if is_valid_tier(num)]
+
+    # Determine the highest valid tier, converting it back to a string for consistency
+    if valid_tiers:
+        highest_tier = max(valid_tiers)
+        # Convert to int if the highest tier is an integer, else keep as float
+        highest_tier_str = str(int(highest_tier)) if highest_tier.is_integer() else str(highest_tier)
+        return highest_tier_str
+    else:
+        return "N/A"
+
+def is_valid_tier(num_str):
+    """
+    Check if the string represents a valid job tier number (within 1 to 3, inclusive).
+    Accepts both integer and decimal representations.
+    """
+    try:
+        num = float(num_str)
+        return 1 <= num <= 3
+    except ValueError:
+        return False
+    
+def reformat_data(data, countries, us_states, job_tiers, patterns):
     reformatted_data = []
-    for item in data:
+
+    for index, item in enumerate(data):
         original_location = item['location']
         country = get_country_from_location(original_location, countries, us_states)
 
         if country != "United States":
             city = original_location.replace(country, "").strip()
-            state = "N/A"  # No state for non-U.S. locations
+            state = "N/A"
         elif country == "UK":
             country = "United Kingdom"
         else:
             city, state, _ = format_us_location(original_location, us_states)
 
-        # Ensure 'pay' is defined within item before accessing it
         pay = item.get('pay', '0')  # Default to '0' if 'pay' key does not exist
-
-        # Determine pay type based on the content of 'pay'
         pay_type = "unknown"
         if "annually" in pay.lower():
             pay_type = "Salary"
         elif "hourly" in pay.lower():
             pay_type = "Hourly"
+        pay = re.sub(r'[^\d.]', '', pay)  # Clean 'pay' to only include numerical values and remove "$"
 
-        # Clean 'pay' to only include numerical values and remove "$"
-        pay = re.sub(r'[^\d.]', '', pay)
+        # Correctly unpack all three values returned by format_professional_title
+        formatted_title, all_extracted_numbers, job_tier = format_professional_title(item['title'].title(), patterns)
 
-        # Format the title
-        formatted_title = format_professional_title(item['title'].title())
+        # Update job_tiers with the index and job tier
+        job_tiers[index] = job_tier
 
         reformatted_item = {
             "title": formatted_title,
+            "job-tier(1-3)": job_tier,  # Directly use job_tier here
             "city": city,
             "state": state,
             "country/region": country if country else "Unknown",
@@ -220,15 +247,14 @@ def guess_location_details(json_object):
 
 # Integration into the data processing flow
 def process_data_with_guessing(data):
-    reformatted_data = reformat_data(data, countries, us_states) 
-    for item in reformatted_data:
-        item = guess_location_details(item)  
-    
+    reformatted_data = reformat_data(data, countries, us_states, job_tiers, patterns)
+    for index in range(len(reformatted_data)):
+        reformatted_data[index] = guess_location_details(reformatted_data[index])
     return reformatted_data
 
-## FOR TESTING (Printing output to terminal)
-# for item in processed_data:
-#     print(json.dumps(item, indent=4))
+# ## FOR TESTING (Printing output to terminal)
+# # for item in processed_data:
+# #     print(json.dumps(item, indent=4))
 
 # Build the full path for the output file
 file_path_output = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
@@ -243,23 +269,11 @@ with open(file_path_output, 'w') as file:
 # FINAL STEP, convert JSON to Sqlite for further analysis
 def create_tables(conn):
     c = conn.cursor()
-    ## FOR TESTING
-    # # Create table for original titles
-    # c.execute('''CREATE TABLE IF NOT EXISTS original_responses (
-    #              id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #              title TEXT, 
-    #              city TEXT, 
-    #              state TEXT, 
-    #              country_region TEXT, 
-    #              lat REAL, 
-    #              lon REAL, 
-    #              pay REAL, 
-    #              pay_type TEXT)''')
-
     # Create table for formatted titles
     c.execute('''CREATE TABLE IF NOT EXISTS formatted_responses (
                  id INTEGER PRIMARY KEY AUTOINCREMENT,
                  formatted_title TEXT, 
+                 job_tier TEXT,
                  city TEXT, 
                  state TEXT, 
                  country_region TEXT, 
@@ -268,43 +282,29 @@ def create_tables(conn):
                  pay REAL, 
                  pay_type TEXT)''')
     conn.commit()
-
+    
 def insert_into_database(data, db_name="survey_responses.db"):
-    # Build the database path relative to the current file and the 'Data' directory
-    current_dir = os.path.dirname(__file__)  # Get the directory of the current script
-    db_path = os.path.join(current_dir, "Data", db_name)  # Append the 'Data' directory and database name
-
-    # Connect to the SQLite database at the specified path
+    current_dir = os.path.dirname(__file__)
+    db_path = os.path.join(current_dir, "Data", db_name)
     conn = sqlite3.connect(db_path)
-
-    # Create the tables
     create_tables(conn)
-
     c = conn.cursor()
-    ## FOR TESTING
-    # # Prepare insert statement for original titles
-    # insert_stmt_original = '''INSERT INTO original_responses (title, city, state, country_region, lat, lon, pay, pay_type) 
-    #                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
 
-    # Prepare insert statement for formatted titles
-    insert_stmt_formatted = '''INSERT INTO formatted_responses (formatted_title, city, state, country_region, lat, lon, pay, pay_type) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+    insert_stmt_formatted = '''INSERT INTO formatted_responses (formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
-    # Insert each record into the respective database table
-    for item in data:
-        ## FOR TESTING
-        # # Insert original title record
-        # values_original = (item['title'], item['city'], item['state'], item['country/region'], 
-        #                    item['lat'], item['lon'], item['pay'], item['pay type'])
-        # c.execute(insert_stmt_original, values_original)
+    for index, item in enumerate(data):
+        formatted_title, extracted_numbers, job_tier = format_professional_title(item['title'].title(), patterns)
+        
+        # Print statements to verify formatted_title and job_tier before insertion
+        # print("Formatted Title:", formatted_title)
+        # print("Job Tier:", job_level)
 
-        # Format the title and insert formatted title record
-        formatted_title = format_professional_title(item['title'].title())
-        values_formatted = (formatted_title, item['city'], item['state'], item['country/region'], 
-                            item['lat'], item['lon'], item['pay'], item['pay type'])
+        # Retrieve job tier using the index from job_tiers dictionary
+        job_tier = job_tiers.get(index, "N/A")
+
+        values_formatted = (formatted_title, job_tier, item['city'], item['state'], item['country/region'], item['lat'], item['lon'], item['pay'], item['pay type'])
         c.execute(insert_stmt_formatted, values_formatted)
 
-    # Commit the transaction and close the connection
     conn.commit()
     conn.close()
 
@@ -325,3 +325,4 @@ def read_processed_data_and_insert(db_name="survey_responses.db"):
 
 # Call the function to read from the fixed JSON and insert into SQLite
 read_processed_data_and_insert()
+job_tiers.clear()
