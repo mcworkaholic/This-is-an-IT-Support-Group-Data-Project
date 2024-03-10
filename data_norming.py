@@ -4,23 +4,13 @@ import os
 import sqlite3
 import requests
 import time
-from config import us_states, countries, patterns, job_tiers
+from config import us_states, countries, patterns, job_tiers, original_json_path, modified_json_path
 
 # Keep track of the last request time
 last_request_time = None
-data_directory = "Data"
-
-# Define the new, modified file name
-modified_json_filename = "IT Professional Survey Responses - Fixed.json"
-
-# Step 1: Read the JSON file
-filename = "IT Professional Survey Responses.json"
-
-# Build the relative path
-file_path = os.path.join(os.path.dirname(__file__), data_directory, filename)
 
 # load it from the file
-with open(file_path, 'r') as file:
+with open(original_json_path, 'r') as file:
     data = json.load(file)
 
 # The regex pattern for matching any variation of "United States"
@@ -256,12 +246,9 @@ def process_data_with_guessing(data):
 # # for item in processed_data:
 # #     print(json.dumps(item, indent=4))
 
-# Build the full path for the output file
-file_path_output = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
-
 # Proceed to write the processed data
 processed_data = process_data_with_guessing(data)
-with open(file_path_output, 'w') as file:
+with open(modified_json_path, 'w') as file:
     json.dump(processed_data, file, indent=4)
 
 ################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
@@ -310,14 +297,13 @@ def insert_into_database(data, db_name="survey_responses.db"):
 
 def read_processed_data_and_insert(db_name="survey_responses.db"):
     # Define the modified file name and build the full path for the input file
-    file_path_input = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
 
     # Ensure the 'Data' directory exists or create it
     if not os.path.exists(os.path.join(os.path.dirname(__file__), "Data")):
         os.makedirs(os.path.join(os.path.dirname(__file__), "Data"))
 
     # Read the processed data from the fixed JSON file
-    with open(file_path_input, 'r') as file:
+    with open(modified_json_path, 'r') as file:
         processed_data = json.load(file)
     
     # Insert the processed data into the SQLite database

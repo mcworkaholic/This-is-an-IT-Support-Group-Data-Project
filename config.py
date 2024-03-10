@@ -1,4 +1,15 @@
+import os
 
+# Filenames and directories
+data_directory = "Data"
+original_json_filename = "IT Professional Survey Responses.json"
+modified_json_filename = "IT Professional Survey Responses - Fixed.json"
+
+# Build the file paths
+original_json_path = os.path.join(os.path.dirname(__file__), data_directory, original_json_filename)
+modified_json_path = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
+
+# Data Structures
 us_states = {
     'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
     'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
