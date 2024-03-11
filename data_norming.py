@@ -260,6 +260,7 @@ def create_tables(conn):
     # Create table for formatted titles
     c.execute('''CREATE TABLE IF NOT EXISTS formatted_responses (
                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                 original_title TEXT,
                  formatted_title TEXT, 
                  job_tier TEXT,
                  city TEXT, 
@@ -278,7 +279,7 @@ def insert_into_database(data, db_name="survey_responses.db"):
     create_tables(conn)
     c = conn.cursor()
 
-    insert_stmt_formatted = '''INSERT INTO formatted_responses (formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+    insert_stmt_formatted = '''INSERT INTO formatted_responses (original_title, formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
     for index, item in enumerate(data):
         formatted_title, extracted_numbers, job_tier = format_professional_title(item['title'].title(), patterns)
@@ -290,7 +291,7 @@ def insert_into_database(data, db_name="survey_responses.db"):
         # Retrieve job tier using the index from job_tiers dictionary
         job_tier = job_tiers.get(index, "N/A")
 
-        values_formatted = (formatted_title, job_tier, item['city'], item['state'], item['country/region'], item['lat'], item['lon'], item['pay'], item['pay type'])
+        values_formatted = (item['title'], formatted_title, job_tier, item['city'], item['state'], item['country/region'], item['lat'], item['lon'], item['pay'], item['pay type'])
         c.execute(insert_stmt_formatted, values_formatted)
 
     conn.commit()
