@@ -183,15 +183,16 @@ def reformat_data(data, countries, us_states, job_tiers, patterns):
         job_tiers[index] = job_tier
 
         reformatted_item = {
-            "title": formatted_title,
-            "job-tier(1-3)": job_tier,  # Directly use job_tier here
+            "original_title": item['title'],
+            "formatted_title": formatted_title,
+            "job_tier": job_tier,  # Directly use job_tier here
             "city": city,
             "state": state,
-            "country/region": country if country else "Unknown",
+            "country_region": country if country else "Unknown",
             "lat": item['lat'],
             "lon": item['lon'],
             "pay": pay,
-            "pay type": pay_type
+            "pay_type": pay_type
         }
         reformatted_data.append(reformatted_item)
     return reformatted_data
