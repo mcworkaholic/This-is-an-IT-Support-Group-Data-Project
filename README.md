@@ -11,7 +11,7 @@ The following image shows what each json object looked like before modification.
 ![Before Image](Images/Before.png)
 
 ## After
-The following image shows what each json object looks like after modification with the supplied python file. Here you can see the new keys city, state, job-tier, and pay type. *Job tier* was devised from specifiers in the job title string such as "IT Analyst 3" or "Tier 2 Support" and *pay type* was determined from either "annually" or "hourly" being present in the pay value string. City and state were determined for each JSON object by reverse geocoding with Nominatum's API.  After being made aware of the charges for using the Google Maps API, this alternative was found to be worth the wait and price (free). These additional keys and values were added for further analysis and segmentation of the data. <br> <br>
+The following image shows what each json object looks like after modification with the supplied python file. Here you can see the new keys city, state, job-tier, and pay type (it went from 5 to 9 possible key value pairs). *Job tier* was devised from specifiers in the job title string such as "IT Analyst 3", "Tier 2 Support", or "Helpdesk level 2" and *pay type* was determined from either "annually" or "hourly" being present in the pay value string. City and state were determined for each JSON object by reverse geocoding with Nominatum's API.  After being made aware of the charges for using the Google Maps API, this alternative was found to be worth the wait and price (free). These additional keys and values were added for further analysis and segmentation of the data. <br> <br>
 
 
 ![After Image](Images/After.png)
