@@ -204,7 +204,7 @@ def guess_location_details(json_object):
     request_interval = 1  # seconds
 
     # Check if country is United States and state or city is empty
-    if json_object["country/region"] == "United States" and (not json_object["state"] or not json_object["city"]):
+    if json_object["country_region"] == "United States" and (not json_object["state"] or not json_object["city"]):
         lat, lon = json_object["lat"], json_object["lon"]
         
         # Enforce rate limiting
@@ -282,7 +282,7 @@ def insert_into_database(data, db_name="survey_responses.db"):
     insert_stmt_formatted = '''INSERT INTO formatted_responses (original_title, formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
 
     for index, item in enumerate(data):
-        formatted_title, extracted_numbers, job_tier = format_professional_title(item['title'].title(), patterns)
+        formatted_title, extracted_numbers, job_tier = format_professional_title(item['original_title'].title(), patterns)
         
         # Print statements to verify formatted_title and job_tier before insertion
         # print("Formatted Title:", formatted_title)
@@ -291,7 +291,7 @@ def insert_into_database(data, db_name="survey_responses.db"):
         # Retrieve job tier using the index from job_tiers dictionary
         job_tier = job_tiers.get(index, "N/A")
 
-        values_formatted = (item['title'], formatted_title, job_tier, item['city'], item['state'], item['country/region'], item['lat'], item['lon'], item['pay'], item['pay type'])
+        values_formatted = (item['original_title'], formatted_title, job_tier, item['city'], item['state'], item['country_region'], item['lat'], item['lon'], item['pay'], item['pay_type'])
         c.execute(insert_stmt_formatted, values_formatted)
 
     conn.commit()
@@ -308,7 +308,7 @@ def read_processed_data_and_insert(db_name="survey_responses.db"):
     with open(modified_json_path, 'r') as file:
         processed_data = json.load(file)
     
-    # Insert the processed data into the SQLite database
+    # Insert the processed data into the SQLite database 
     insert_into_database(processed_data, db_name)
 
 # Call the function to read from the fixed JSON and insert into SQLite
