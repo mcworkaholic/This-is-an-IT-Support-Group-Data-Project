@@ -4,26 +4,30 @@
 How similar are the professional titles? Can we group some together? */
 SELECT formatted_title, COUNT(formatted_title) AS title_count
 FROM formatted_responses
+JOIN locations ON formatted_responses.location_id = locations.id
 GROUP BY formatted_title
-ORDER BY title_count DESC;  
+ORDER BY title_count DESC;
+  
 
 /* This query gets the average pay for IT professionals in Texas who are salaried. 
 yields $76918.55 */
-SELECT avg(pay) 
+SELECT AVG(pay) 
 FROM formatted_responses 
-WHERE state = 'Texas' AND pay_type = 'Salary'
+JOIN locations ON formatted_responses.location_id = locations.id
+WHERE locations.state = 'Texas' AND pay_type = 'Salary';
 
 /* This query gets the average pay for IT professionals whose title = 'IT Manager' and are paid a salary.
 yields $83261.29.55 */
-SELECT avg(pay) 
+SELECT AVG(pay) 
 FROM formatted_responses 
-WHERE formatted_title = 'IT Manager' AND pay_type = 'Salary'
+JOIN locations ON formatted_responses.location_id = locations.id
+WHERE formatted_title = 'IT Manager' AND pay_type = 'Salary';
 
 /* This query gets the quantity of IT professionals whose pay type = 'Salary'.
 yields 848 */
 SELECT COUNT(pay_type) 
 FROM formatted_responses 
-WHERE pay_type = 'Salary'
+WHERE pay_type = 'Salary';
 
 /* This query gets the quantity of IT professionals whose pay type = 'Hourly'.
 yields 263 */
@@ -33,10 +37,11 @@ WHERE pay_type = 'Hourly'
 
 /* This query identifies the states with the highest number of IT professionals.
 Shows which states are major hubs for IT talent. */
-SELECT state, COUNT(*) AS professional_count
+SELECT locations.state, COUNT(*) AS professional_count
 FROM formatted_responses
-WHERE state != 'N/A' AND state IS NOT NULL
-GROUP BY state
+JOIN locations ON formatted_responses.location_id = locations.id
+WHERE locations.state IS NOT NULL
+GROUP BY locations.state
 ORDER BY professional_count DESC;
 
 /* This query calculates the average salary for IT professionals across different job tiers.
@@ -49,18 +54,20 @@ ORDER BY job_tier;
 
 /* This query finds the top-paying cities for IT professionals.
 Highlights cities where IT professionals are compensated most generously. */
-SELECT city, state, AVG(pay) AS average_pay
+SELECT locations.city, locations.state, AVG(pay) AS average_pay
 FROM formatted_responses
+JOIN locations ON formatted_responses.location_id = locations.id
 WHERE pay_type = 'Salary'
-GROUP BY city, state
+GROUP BY locations.city, locations.state
 ORDER BY average_pay DESC
 LIMIT 10;
 
 /* This query counts the number of IT professionals in each country/region,
 providing a global perspective on the distribution of IT jobs. */
-SELECT country_region, COUNT(*) AS professional_count
+SELECT locations.country, COUNT(*) AS professional_count
 FROM formatted_responses
-GROUP BY country_region
+JOIN locations ON formatted_responses.location_id = locations.id
+GROUP BY locations.country
 ORDER BY professional_count DESC;
 
 /* This query evaluates the distribution of pay types (Salary vs. Hourly) across job tiers,
@@ -79,9 +86,10 @@ WHERE pay_type = 'Hourly';
 
 /* This query finds the geographic coordinates (lat, lon) with the highest concentration of IT professionals,
 useful for pinpointing IT hubs on a map. */
-SELECT lat, lon, COUNT(*) AS professional_count
+SELECT locations.lat, locations.lon, COUNT(*) AS professional_count
 FROM formatted_responses
-GROUP BY lat, lon
+JOIN locations ON formatted_responses.location_id = locations.id
+GROUP BY locations.lat, locations.lon
 ORDER BY professional_count DESC
 LIMIT 10;
 

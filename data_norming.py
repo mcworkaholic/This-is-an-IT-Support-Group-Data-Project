@@ -255,44 +255,106 @@ with open(modified_json_path, 'w') as file:
 ################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 
 # FINAL STEP, convert JSON to Sqlite for further analysis
+# def create_tables(conn):
+#     c = conn.cursor()
+#     # Create table for formatted titles
+#     c.execute('''CREATE TABLE IF NOT EXISTS formatted_responses (
+#                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+#                  original_title TEXT,
+#                  formatted_title TEXT, 
+#                  job_tier TEXT,
+#                  city TEXT, 
+#                  state TEXT, 
+#                  country_region TEXT, 
+#                  lat REAL, 
+#                  lon REAL, 
+#                  pay REAL, 
+#                  pay_type TEXT)''')
+#     conn.commit()
+    
 def create_tables(conn):
     c = conn.cursor()
-    # Create table for formatted titles
-    c.execute('''CREATE TABLE IF NOT EXISTS formatted_responses (
-                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                 original_title TEXT,
-                 formatted_title TEXT, 
-                 job_tier TEXT,
-                 city TEXT, 
-                 state TEXT, 
-                 country_region TEXT, 
-                 lat REAL, 
-                 lon REAL, 
-                 pay REAL, 
-                 pay_type TEXT)''')
+    # Create a separate table for locations
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS locations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            lat REAL, 
+            lon REAL, 
+            city TEXT, 
+            state TEXT, 
+            country TEXT
+        )
+    ''')
+
+    # Create table for formatted responses with a foreign key to locations
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS formatted_responses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            original_title TEXT,
+            formatted_title TEXT, 
+            job_tier TEXT,
+            location_id INTEGER,
+            pay REAL, 
+            pay_type TEXT,
+            FOREIGN KEY(location_id) REFERENCES locations(id)
+        )
+    ''')
     conn.commit()
+
+def insert_location_get_id(conn, location_data):
+    """
+    Insert location data if not exists and return the ID.
+    """
+    c = conn.cursor()
+    # Check if the location already exists
+    c.execute('''SELECT id FROM locations WHERE lat = ? AND lon = ? AND city = ? AND state = ? AND country = ?''', location_data)
+    location_id = c.fetchone()
+    if location_id:
+        return location_id[0]
+    else:
+        c.execute('''INSERT INTO locations (lat, lon, city, state, country) VALUES (?, ?, ?, ?, ?)''', location_data)
+        return c.lastrowid
+    
+# def insert_into_database(data, db_name="survey_responses.db"):
+#     current_dir = os.path.dirname(__file__)
+#     db_path = os.path.join(current_dir, "Data", db_name)
+#     conn = sqlite3.connect(db_path)
+#     create_tables(conn)
+#     c = conn.cursor()
+
+#     insert_stmt_formatted = '''INSERT INTO formatted_responses (original_title, formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+
+#     for index, item in enumerate(data):
+#         formatted_title, extracted_numbers, job_tier = format_professional_title(item['original_title'].title(), patterns)
+        
+#         # Print statements to verify formatted_title and job_tier before insertion
+#         # print("Formatted Title:", formatted_title)
+#         # print("Job Tier:", job_level)
+
+#         # Retrieve job tier using the index from job_tiers dictionary
+#         job_tier = job_tiers.get(index, "N/A")
+
+#         values_formatted = (item['original_title'], formatted_title, job_tier, item['city'], item['state'], item['country_region'], item['lat'], item['lon'], item['pay'], item['pay_type'])
+#         c.execute(insert_stmt_formatted, values_formatted)
+
+#     conn.commit()
+#     conn.close()
     
 def insert_into_database(data, db_name="survey_responses.db"):
     current_dir = os.path.dirname(__file__)
     db_path = os.path.join(current_dir, "Data", db_name)
     conn = sqlite3.connect(db_path)
     create_tables(conn)
-    c = conn.cursor()
 
-    insert_stmt_formatted = '''INSERT INTO formatted_responses (original_title, formatted_title, job_tier, city, state, country_region, lat, lon, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-
-    for index, item in enumerate(data):
+    for item in data:
         formatted_title, extracted_numbers, job_tier = format_professional_title(item['original_title'].title(), patterns)
         
-        # Print statements to verify formatted_title and job_tier before insertion
-        # print("Formatted Title:", formatted_title)
-        # print("Job Tier:", job_level)
+        location_data = (item['lat'], item['lon'], item['city'], item['state'], item['country_region'])
+        location_id = insert_location_get_id(conn, location_data)
 
-        # Retrieve job tier using the index from job_tiers dictionary
-        job_tier = job_tiers.get(index, "N/A")
-
-        values_formatted = (item['original_title'], formatted_title, job_tier, item['city'], item['state'], item['country_region'], item['lat'], item['lon'], item['pay'], item['pay_type'])
-        c.execute(insert_stmt_formatted, values_formatted)
+        insert_stmt_formatted = '''INSERT INTO formatted_responses (original_title, formatted_title, job_tier, location_id, pay, pay_type) VALUES (?, ?, ?, ?, ?, ?)'''
+        values_formatted = (item['original_title'], formatted_title, job_tier, location_id, item['pay'], item['pay_type'])
+        conn.cursor().execute(insert_stmt_formatted, values_formatted)
 
     conn.commit()
     conn.close()

@@ -3,8 +3,7 @@
 
 ### Todo
 
-- [ ] Normalize the database structure  
-  - [ ] Change queries in queries.sql to reflect these changes
+
 - [ ] Build out the new HTML form with input validation and sanitization on Flask micro-webframework  
   - [ ] Write tests for the form  
 - [ ] Generate word-cloud for common professional titles with shiny new library
@@ -21,3 +20,5 @@
 
 - [x] Create my first TODO.md  
 - [x] Test most recent changes of 3/10/2024 
+- [x] Normalize the database structure  
+  - [x] Change queries in queries.sql to reflect these changes
