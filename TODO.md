@@ -14,7 +14,7 @@
 - [ ] Work on Github Repo [This-is-an-IT-Support-Group-Data-Project] 
 - [ ] Create stunning visualizations 
 - [ ] Generate word-cloud for common professional titles with shiny new library
-  - [ ] Pick out image mask for the word cloud
+  - [x] Pick out image mask for the word cloud
 
 ### Done ✓
 
