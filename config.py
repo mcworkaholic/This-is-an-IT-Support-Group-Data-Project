@@ -8,6 +8,14 @@ modified_json_filename = "IT Professional Survey Responses - Fixed.json"
 # Build the file paths
 original_json_path = os.path.join(os.path.dirname(__file__), data_directory, original_json_filename)
 modified_json_path = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
+database_path = os.path.join(os.path.dirname(__file__), data_directory, "survey_responses.db")
+
+# Construct the relative path 
+current_script_dir = os.path.dirname(os.path.realpath(__file__))  # Gets the directory where the script is located
+
+# Define the path to the CSV and TXT file
+csv_file_path = os.path.join(current_script_dir, "Data", "professional_titles.csv")
+txt_file_path = os.path.join(current_script_dir, "Data", "professional_titles.txt")
 
 # Data Structures
 us_states = {
