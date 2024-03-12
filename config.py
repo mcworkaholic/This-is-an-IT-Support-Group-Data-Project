@@ -2,6 +2,7 @@ import os
 
 # Filenames and directories
 data_directory = "Data"
+image_directory = "Images"
 original_json_filename = "IT Professional Survey Responses.json"
 modified_json_filename = "IT Professional Survey Responses - Fixed.json"
 
@@ -9,6 +10,7 @@ modified_json_filename = "IT Professional Survey Responses - Fixed.json"
 original_json_path = os.path.join(os.path.dirname(__file__), data_directory, original_json_filename)
 modified_json_path = os.path.join(os.path.dirname(__file__), data_directory, modified_json_filename)
 database_path = os.path.join(os.path.dirname(__file__), data_directory, "survey_responses.db")
+IT_image_path = os.path.join(os.path.dirname(__file__), image_directory, "good_head.png")
 
 # Construct the relative path 
 current_script_dir = os.path.dirname(os.path.realpath(__file__))  # Gets the directory where the script is located
