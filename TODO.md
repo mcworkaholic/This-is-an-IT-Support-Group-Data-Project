@@ -12,7 +12,7 @@
 ### In Progress
 
 - [x] Work on Github Repo [This-is-an-IT-Support-Group-Data-Project] 
-- [ ] Create stunning visualizations 
+
 
 
 ### Done ✓
@@ -23,3 +23,4 @@
   - [x] Change queries in queries.sql to reflect these changes
 - [x] Generate word-cloud for common professional titles with shiny new library
   - [x] Pick out image mask for the word cloud
+- [x] Create interesting visualizations 
