@@ -4,14 +4,15 @@
 ### Todo
 
 
-- [ ] Build out the new HTML form with input validation and sanitization on Flask micro-webframework  
-  - [ ] Write tests for the form  
+
 - [ ] Write Operating Instructions
 
 
 ### In Progress
 
 - [x] Work on Github Repo [This-is-an-IT-Support-Group-Data-Project] 
+- [x] Build out the new HTML form with input validation and sanitization on Flask micro-webframework  
+  - [ ] Write tests for the form  
 
 
 
