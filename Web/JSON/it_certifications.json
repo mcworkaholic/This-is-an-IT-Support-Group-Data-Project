@@ -1,0 +1,314 @@
+{
+    "certifications": [
+        {
+            "name": "(ISC)\u00c2\u00b2 HCISPP (HealthCare Information Security and Privacy Practitioner)",
+            "organization": "ISC\u00c2\u00b2",
+            "area": "Healthcare Information Security"
+        },
+        {
+            "name": "AWS Certified Cloud Practitioner",
+            "organization": "Amazon Web Services",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "AWS Certified Developer \u00e2\u20ac\u201c Associate",
+            "organization": "Amazon Web Services",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "AWS Certified Solutions Architect - Associate",
+            "organization": "Amazon Web Services",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Certified Artificial Intelligence Practitioner (CAIP)",
+            "organization": "CertNexus",
+            "area": "Artificial Intelligence"
+        },
+        {
+            "name": "Certified Big Data Professional",
+            "organization": "Data Science Council of America",
+            "area": "Big Data"
+        },
+        {
+            "name": "Certified Blockchain Professional (CBP)",
+            "organization": "Blockchain Training Alliance",
+            "area": "Blockchain Technology"
+        },
+        {
+            "name": "Certified Cloud Security Professional (CCSP)",
+            "organization": "ISC\u00c2\u00b2",
+            "area": "Cloud Security"
+        },
+        {
+            "name": "Certified Cyber Forensics Professional (CCFP)",
+            "organization": "ISC\u00c2\u00b2",
+            "area": "Digital Forensics"
+        },
+        {
+            "name": "Certified Data Privacy Solutions Engineer (CDPSE)",
+            "organization": "ISACA",
+            "area": "Privacy & Data Protection"
+        },
+        {
+            "name": "Certified Data Professional (CDP)",
+            "organization": "Institute for Certification of Computing Professionals",
+            "area": "Data Management"
+        },
+        {
+            "name": "Certified Data Scientist (CDS)",
+            "organization": "Data Science Council of America (DASCA)",
+            "area": "Data Science"
+        },
+        {
+            "name": "Certified DevOps Engineer - Professional",
+            "organization": "Amazon Web Services",
+            "area": "DevOps"
+        },
+        {
+            "name": "Certified Ethical Hacker (CEH)",
+            "organization": "EC-Council",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "Certified Information Privacy Technologist (CIPT)",
+            "organization": "International Association of Privacy Professionals (IAPP)",
+            "area": "Data Privacy"
+        },
+        {
+            "name": "Certified Information Security Manager (CISM)",
+            "organization": "ISACA",
+            "area": "Security Management"
+        },
+        {
+            "name": "Certified Information Systems Auditor (CISA)",
+            "organization": "ISACA",
+            "area": "Information Systems Auditing"
+        },
+        {
+            "name": "Certified Information Systems Security Professional (CISSP)",
+            "organization": "ISC\u00c2\u00b2",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "Certified Information Technology Professional (CITP)",
+            "organization": "American Institute of CPAs",
+            "area": "IT Strategy & Management"
+        },
+        {
+            "name": "Certified Internet Web Professional (CIW) - Web Design Specialist",
+            "organization": "CIW",
+            "area": "Web Design"
+        },
+        {
+            "name": "Certified Internet of Things Practitioner (CIoTP)",
+            "organization": "CertNexus",
+            "area": "Internet of Things"
+        },
+        {
+            "name": "Certified Kubernetes Administrator (CKA)",
+            "organization": "Cloud Native Computing Foundation",
+            "area": "Container Orchestration"
+        },
+        {
+            "name": "Certified Network Defender (CND)",
+            "organization": "EC-Council",
+            "area": "Network Security"
+        },
+        {
+            "name": "Certified Scrum Developer (CSD)",
+            "organization": "Scrum Alliance",
+            "area": "Agile Development"
+        },
+        {
+            "name": "Certified Scrum Product Owner (CSPO)",
+            "organization": "Scrum Alliance",
+            "area": "Agile & Scrum"
+        },
+        {
+            "name": "Certified Scrum Professional (CSP)",
+            "organization": "Scrum Alliance",
+            "area": "Agile & Scrum"
+        },
+        {
+            "name": "Certified ScrumMaster (CSM)",
+            "organization": "Scrum Alliance",
+            "area": "Agile & Scrum"
+        },
+        {
+            "name": "Certified Secure Software Lifecycle Professional (CSSLP)",
+            "organization": "ISC\u00c2\u00b2",
+            "area": "Secure Software Development"
+        },
+        {
+            "name": "Certified Software Development Professional (CSDP)",
+            "organization": "IEEE Computer Society",
+            "area": "Software Development"
+        },
+        {
+            "name": "Certified System Administrator in Red Hat OpenStack",
+            "organization": "Red Hat",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Certified Wireless Network Administrator (CWNA)",
+            "organization": "Certified Wireless Network Professional (CWNP)",
+            "area": "Wireless Networking"
+        },
+        {
+            "name": "Cisco Certified Network Associate (CCNA)",
+            "organization": "Cisco",
+            "area": "Networking"
+        },
+        {
+            "name": "Cisco Certified Network Professional (CCNP)",
+            "organization": "Cisco",
+            "area": "Networking"
+        },
+        {
+            "name": "CompTIA A+",
+            "organization": "CompTIA",
+            "area": "IT Fundamentals"
+        },
+        {
+            "name": "CompTIA Advanced Security Practitioner (CASP+)",
+            "organization": "CompTIA",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "CompTIA CySA+ (Cybersecurity Analyst)",
+            "organization": "CompTIA",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "CompTIA Network+",
+            "organization": "CompTIA",
+            "area": "Networking"
+        },
+        {
+            "name": "CompTIA Security+",
+            "organization": "CompTIA",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "GIAC Security Essentials (GSEC)",
+            "organization": "GIAC",
+            "area": "Cybersecurity"
+        },
+        {
+            "name": "Google Associate Cloud Engineer",
+            "organization": "Google Cloud",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Google Cloud Certified - Professional Cloud Architect",
+            "organization": "Google Cloud",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Google Professional Data Engineer",
+            "organization": "Google Cloud",
+            "area": "Data Engineering"
+        },
+        {
+            "name": "ITIL\u00c2\u00ae Foundation",
+            "organization": "AXELOS",
+            "area": "IT Service Management"
+        },
+        {
+            "name": "Linux Professional Institute Certification (LPIC-1)",
+            "organization": "Linux Professional Institute",
+            "area": "Linux Administration"
+        },
+        {
+            "name": "Microsoft Certified: Azure Administrator Associate",
+            "organization": "Microsoft",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Microsoft Certified: Azure Solutions Architect Expert",
+            "organization": "Microsoft",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Microsoft Certified: Data Analyst Associate",
+            "organization": "Microsoft",
+            "area": "Data Analysis"
+        },
+        {
+            "name": "Microsoft Certified: DevOps Engineer Expert",
+            "organization": "Microsoft",
+            "area": "DevOps"
+        },
+        {
+            "name": "Microsoft Certified: Security, Compliance, and Identity Fundamentals",
+            "organization": "Microsoft",
+            "area": "Security and Compliance"
+        },
+        {
+            "name": "Nutanix Certified Professional - Multicloud Infrastructure (NCP-MCI)",
+            "organization": "Nutanix",
+            "area": "Cloud Infrastructure"
+        },
+        {
+            "name": "Offensive Security Certified Professional (OSCP)",
+            "organization": "Offensive Security",
+            "area": "Ethical Hacking"
+        },
+        {
+            "name": "Oracle Certified Associate, MySQL 5",
+            "organization": "Oracle",
+            "area": "Database Management"
+        },
+        {
+            "name": "Oracle Certified Professional, Java SE (OCP)",
+            "organization": "Oracle",
+            "area": "Programming & Development"
+        },
+        {
+            "name": "Oracle Cloud Infrastructure Architect Professional",
+            "organization": "Oracle",
+            "area": "Cloud Computing"
+        },
+        {
+            "name": "Other",
+            "organization": "Other",
+            "area": "Other"
+        },
+        {
+            "name": "Palo Alto Networks Certified Network Security Administrator (PCNSA)",
+            "organization": "Palo Alto Networks",
+            "area": "Network Security"
+        },
+        {
+            "name": "Project Management Professional (PMP)",
+            "organization": "Project Management Institute",
+            "area": "Project Management"
+        },
+        {
+            "name": "Red Hat Certified Engineer (RHCE)",
+            "organization": "Red Hat",
+            "area": "System Administration"
+        },
+        {
+            "name": "Salesforce Certified Administrator",
+            "organization": "Salesforce",
+            "area": "CRM Administration"
+        },
+        {
+            "name": "TOGAF 9 Certified",
+            "organization": "The Open Group",
+            "area": "Enterprise Architecture"
+        },
+        {
+            "name": "VMware Certified Advanced Professional - Data Center Virtualization Design (VCAP-DCV Design)",
+            "organization": "VMware",
+            "area": "Virtualization"
+        },
+        {
+            "name": "VMware Certified Professional - Data Center Virtualization (VCP-DCV)",
+            "organization": "VMware",
+            "area": "Virtualization"
+        }
+    ]
+}
