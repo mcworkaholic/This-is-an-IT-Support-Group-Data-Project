@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IT Support Group Survey</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <noscript>
+        <div style="border: 2px solid red; padding: 10px; text-align: center;">
+            <strong>Warning!</strong> JavaScript is disabled in your web browser. Please enable JavaScript for the best experience.
+        </div>
+    </noscript>
+    <div class="custom-form-container my-5">
+        <h2 class="mb-4">IT Support Group Survey</h2>
+        <form action="/submit_form" method="post">
+            <!-- Email -->
+            <div class="card mb-3">
+            <div class="card-body">
+            <div class="form-group">
+                <label for ="email"class="required-question">Email</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            </div>
+            </div>
+            <!-- Position Title -->
+            <div class="card mb-3">
+            <div class="card-header">Position Details</div>
+            <div class="card-body">
+            <div class="form-group">
+                <label for="position"class="required-question">Position title <span>*</span> (Please omit the grade, level, or tier such as "IT manager 2" or "level 2 tech support")</label>
+                <input type="text" class="form-control" id="positionTitle" name="positionTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="position"class="required-question">Position grade <span>*</span></label>
+                <select class="form-control" id="positionGrade" name="positionGrade" required>
+                    <option value="">Please select a position grade/level/tier</option>
+                    <!-- Populate this list with countries -->
+                    <option value="N/A">N/A</option>
+                    <option value="1">1 (junior)</option>
+                    <option value="2">2 (middle-level)</option>
+                    <option value="3">3 (senior)</option>
+                    <!-- Add other countries as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Choose the option that best describes your position <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="position_type" id="intern" value="Intern" required>
+                    <label class="form-check-label" for="intern">Intern</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="position_type" id="fullTime" value="Full-Time" required>
+                    <label class="form-check-label" for="fullTime">Full-Time</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="position_type" id="partTime" value="Part-Time" required>
+                    <label class="form-check-label" for="partTime">Part-Time</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="position_type" id="contractor" value="Contractor" required>
+                    <label class="form-check-label" for="contractor">Contractor</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Job function ( choose the best description ) <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="job_function" id="individualContributor" value="Individual Contributor" required>
+                    <label class="form-check-label" for="fullyRemote">Individual Contributor</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="job_function" id="teamLead" value="Team-Lead" required>
+                    <label class="form-check-label" for="hybrid">Team-Lead</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="job_function" id="manager" value="Manager" required>
+                    <label class="form-check-label" for="fullyOnSite">Manager</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="job_function" id="vicePresident" value="Vice President" required>
+                    <label class="form-check-label" for="hybrid">Vice President</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="job_function" id="founder_ChiefExecutiveOfficer" value="Founder/Chief Executive Officer" required>
+                    <label class="form-check-label" for="fullyOnSite">Founder/Chief Executive Officer</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Are you remote? <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="remote_status" id="fullyRemote" value="Fully Remote" required>
+                    <label class="form-check-label" for="fullyRemote">Fully Remote</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="remote_status" id="hybrid" value="Hybrid" required>
+                    <label class="form-check-label" for="hybrid">Hybrid</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="remote_status" id="fullyOnSite" value="Fully On-Site" required>
+                    <label class="form-check-label" for="fullyOnSite">Fully On-Site</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="aiInJob"class="required-question">Are you using AI to help you with your job? If so, how? <span>*</span></label>
+                <input type="text" class="form-control" id="aiInJob" name="aiInJob" required>
+            </div>
+            </div>
+            </div>
+           <!-- Location Card -->
+            <div class="card mb-3">
+            <div class="card-header">Location Details</div>
+            <div class="card-body">
+                <!-- Country Dropdown -->
+                <div class="form-group">
+                <label for="country" class="required-question">Country <span>*</span></label>
+                <select class="form-control" id="country" name="country" required>
+                    <option value="">Please select a country</option>
+                    <!-- Populate this list with countries -->
+                    <!-- Add other countries as needed -->
+                </select>
+                </div>
+                <!-- State/Province Dropdown -->
+                <div class="form-group">
+                <label for="state" class="required-question">State/Province <span>*</span></label>
+                <select class="form-control" id="state" name="state">
+                    <!-- Options will depend on the country selected -->
+                    <option value="">Please select a state/province</option>
+                    <option value="N/A">N/A</option>
+                </select>
+                </div>
+                <!-- City Dropdown -->
+                <div class="form-group">
+                <label for="city" class="required-question">City <span>*</span></label>
+                 <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+            </div>
+            </div>
+            <!-- Salary -->
+            <div class="card mb-3">
+            <div class="card-header">Wage Information</div>
+            <div class="card-body">
+            <div class="form-group">
+                <label for="city" class="required-question">Currency <span>*</span></label>
+                <select class="form-control" id="currency" name="currency">
+                    <!-- Options will depend on the state/province selected -->
+                    <option value="">Please select the currency in which you are paid</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="salary"class="required-question">Base salary or hourly rate <span>*</span></label>
+                <input type="number" class="form-control" id="salary" name="salary" required>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Pay frequency <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="pay_frequency" id="annual" value="Annual" required>
+                    <label class="form-check-label" for="annual">Annual (Per Year)</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="pay_frequency" id="hourly" value="Hourly" required>
+                    <label class="form-check-label" for="hourly">Hourly</label>
+                </div>
+            </div>
+            </div>
+            </div>
+            <!-- Education -->
+            <div class="card mb-3">
+             <div class="card-header">Background</div>
+            <div class="card-body">
+            <div class="form-group">
+                <label class="required-question">Education <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="noSchool" value="No School" required>
+                    <label class="form-check-label" for="noSchool">No School</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="highSchool" value="High School" required>
+                    <label class="form-check-label" for="highSchool">High School Diploma</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="associates" value="Associate's" required>
+                    <label class="form-check-label" for="associates">Associate's Degree</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="bachelors" value="Bachelor's" required>
+                    <label class="form-check-label" for="bachelors">Bachelor's Degree</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="masters" value="Master's" required>
+                    <label class="form-check-label" for="masters">Master's Degree</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="phd" value="PHD / Doctorate" required>
+                    <label class="form-check-label" for="phd">PHD / Doctoral Degree</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="education" id="other" value="Other / Bootcamp" required>
+                    <label class="form-check-label" for="other">Other / Bootcamp</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Years of experience in IT industry <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="Less than 1" value="Less than 1" required>
+                    <label class="form-check-label" for="Less than 1">Less than 1</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="1-2" value="1-2" required>
+                    <label class="form-check-label" for="1-2">1 - 2</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="3-5" value="3-5" required>
+                    <label class="form-check-label" for="3-5">3 - 5</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="6-10" value="6-10" required>
+                    <label class="form-check-label" for="6-10">6 - 10</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="11-15" value="11-15" required>
+                    <label class="form-check-label" for="11-15">11 - 15</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="it_experience" id="More than 15" value="More than 15" required>
+                    <label class="form-check-label" for="More than 15">More than 15</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="certifications"class="required-question">Do you have any certifications relevant to the industry? <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="certifications_helpful" id="certYes" value="Yes" required>
+                    <label class="form-check-label" for="certYes">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="certifications_helpful" id="certNo" value="No" required>
+                    <label class="form-check-label" for="certNo">No</label>
+                </div>
+            </div>
+            <div class="form-group">
+            <label for="certificationsSelect"class="required-question hidden" id="certificationsLabel" >Please select your certifications: <span>*</span></label>
+            <div id="certificationContainer" class="hidden">
+            <!-- Content to show/hide goes here -->
+            </div>
+            </div>
+            <div class="form-group hidden" id="otherCertsDiv">
+                <label for="otherCerts"class="required-question hidden">Please describe your certifications, with each one separated by a comma if listing more than 1: <span>*</span></label>
+                <input type="text" class="form-control hidden" id="otherCerts" name="otherCerts" required>
+            </div>
+            <div class="form-group">
+                <label class="required-question">Have certifications been helpful in your employment? <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="certifications_helpful" id="certHelpYes" value="Yes" required>
+                    <label class="form-check-label" for="certHelpYes">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="certifications_helpful" id="certHelpNo" value="No" required>
+                    <label class="form-check-label" for="certHelpNo">No</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="certifications_helpful" id="certHelpNotSure" value="Not sure" required>
+                    <label class="form-check-label" for="certHelpNotSure">Not sure</label>
+                </div>
+            </div>
+            </div>
+            </div>
+            <div class="card mb-3">
+            <div class="card-header">Skills</div>
+            <div class="card-body">
+             <div class="form-group">
+                <label for="valuableSkills"class="required-question">What skills do you think will be most valuable in 2024? <span>*</span></label>
+                <input type="text" class="form-control" id="valuableSkills" name="valuableSkills" required>
+            </div>
+            <div class="form-group">
+                <label for="newSkills"class="required-question">What new skills do you want to learn in 2024? <span>*</span></label>
+                <input type="text" class="form-control" id="newSkills" name="newSkills" required>
+            </div>
+            </div>
+            </div>
+            <div class="card mb-3">
+            <div class="card-body">
+             <div class="form-group">
+                <label for="itPainPoints"class="required-question">What is the biggest pain point you have working in IT? <span>*</span></label>
+                <input type="text" class="form-control" id="itPainPoints" name="itPainPoints" required>
+            </div>
+            </div>
+            </div>
+            <!-- Employees at Company -->
+            <div class="card mb-3">
+            <div class="card-header">Company Information</div>
+            <div class="card-body">
+            <div class="form-group">
+                <label for="industry" class="required-question">Industry <span>*</span></label>
+                <input type="text" class="form-control" id="industry" name="industry" required>
+            </div>
+            <div class="form-group">
+                <label class="required-question">How many total employees at your company? <span>*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="Less than 10" value="Less than 10" required>
+                    <label class="form-check-label" for="Less than 10">Less than 10</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="10-20" value="10-20" required>
+                    <label class="form-check-label" for="10-20">10 - 20</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="20-50" value="20-50" required>
+                    <label class="form-check-label" for="20-50">20 - 50</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="50-100" value="50-100" required>
+                    <label class="form-check-label" for="50-100">50 - 100</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="100-150" value="100-150" required>
+                    <label class="form-check-label" for="100-150">100 - 150</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="150-500" value="150-500" required>
+                    <label class="form-check-label" for="150-500">150 - 500</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="500 - 1000" value="500 - 1000" required>
+                    <label class="form-check-label" for="500 - 1000">500 - 1000</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="More than 1000" value="More than 1000" required>
+                    <label class="form-check-label" for="More than 1000">More than 1000</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="num_employees" id="Not_sure_num_employee" value="Not sure" required>
+                    <label class="form-check-label" for="Not_sure_num_employee">Not sure</label>
+                </div>
+            </div>
+            </div>
+            </div>
+            <!-- Continue with the rest of the form inputs -->
+           <!-- Submit and Reset Button -->
+            <div class="form-group d-flex justify-content-between">
+                <input type="submit" class="btn btn-primary" value="Submit">
+                 <button type="reset" class="btn btn-secondary">Clear Form</button>
+            </div>
+        </form>
+    <!-- Bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
