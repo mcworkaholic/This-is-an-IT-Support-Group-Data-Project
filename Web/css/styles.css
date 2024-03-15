@@ -1,0 +1,59 @@
+
+.required-question {
+    font-weight: 600; /* Make the text bold */
+    }
+    .required-question span {
+    color: #9E2828; /* Color the asterisk red */
+    font-size: 0.85em; 
+    position: relative;
+    top: -4px; /* Adjust as needed */
+    }
+   body, html {
+    height: auto; /* Adjust to content height */
+    min-height: 100%; /* Ensure at least full viewport height */
+    margin: 0; /* Reset default margin */
+    display: flex; /* Use flexbox to enable center alignment */
+    justify-content: center; /* Center content horizontally */
+}
+.container {
+    width: 33.33%; /* Set width to one-third of the viewport width */
+    margin: 20px auto; /* Center the container with some margin on top and bottom */
+    padding: 20px; /* Add some padding inside the container */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    display: block; /* Use block layout for the container */
+    max-height: 100vh; /* Max height to viewport height */
+}
+.custom-form-container {
+    width: 133%; /* Set your desired width */
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    display: block;
+    max-height: 100vh;
+}
+@media (max-width: 768px) {
+    .container {
+        width: 100%; /* On smaller screens, container takes full width */
+        margin: 10px auto; /* Adjust margin for smaller screens */
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+}
+.form-control {
+    border: none !important; /* Remove all borders, add !important to override any existing styles */
+    border-bottom: 1px solid #ced4da !important; /* Add bottom border only, with !important */
+    border-radius: 0 !important; /* Remove border-radius with !important */
+    padding: .375rem .75rem; /* Keep the padding to ensure the input text is nicely aligned */
+    box-shadow: none !important; /* No shadow for the flat design with !important */
+}
+.form-control:focus {
+    border-bottom: 2px solid #007bff !important; /* Make the bottom border thicker on focus, with !important */
+    box-shadow: none !important; /* Remove Bootstrap's default focus glow with !important */
+}
+.form-control::placeholder {
+    color: #6c757d; /* Bootstrap's default placeholder text color */
+    opacity: 1; /* Full opacity */
+}
+
+.hidden {
+    display: none;
+}
