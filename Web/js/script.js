@@ -4196,13 +4196,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Call the function to dynamically add the checkboxes
     addCertificationCheckboxes();
-});
 
-document.addEventListener('DOMContentLoaded', function() {
     const certYes = document.getElementById('certYes');
     const certNo = document.getElementById('certNo');
     const certificationContainer = document.getElementById('certificationContainer');
-    // Use querySelector to find the label by its 'for' attribute
     const certificationsLabel = document.getElementById("certificationsLabel");
 
     // Function to toggle the display based on selection
@@ -4222,130 +4219,76 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the display state based on the current selection
     toggleCertificationDisplay();
-});
 
+    const selectElement = document.getElementById('country');
+    countriesAndCurrencies.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.code.toLowerCase();
+        option.textContent = country.name;
+        selectElement.appendChild(option);
+    });
 
-const selectElement = document.getElementById('country');
-countriesAndCurrencies.forEach(country => {
-    const option = document.createElement('option');
-    option.value = country.code.toLowerCase(); // Using country code as value, converted to lowercase
-    option.textContent = country.name; // Setting the display text to the country's name
-    selectElement.appendChild(option);
-});
+    // Select the currency dropdown element
+    const currencySelectElement = document.getElementById('currency');
 
-// Select the currency dropdown element
-const currencySelectElement = document.getElementById('currency');
+    // Initialize an array to keep track of currencies
+    const currenciesArray = [];
 
-// Initialize an array to keep track of currencies
-const currenciesArray = [];
+    // Iterate over the countries and currencies JSON to collect currencies
+    countriesAndCurrencies.forEach(country => {
+        const currency = country.currency;
+        const currencyCode = currency.code;
 
-// Iterate over the countries and currencies JSON to collect currencies
-countriesAndCurrencies.forEach(country => {
-    const currency = country.currency;
-    const currencyCode = currency.code;
+        // Check if the currency has not already been added to avoid duplicates
+        if (!currenciesArray.some(c => c.code === currencyCode)) {
+            // Add the currency information to the array
+            currenciesArray.push({
+                code: currencyCode,
+                text: `${currency.name} (${currency.symbol_native})`
+            });
+        }
+    });
 
-    // Check if the currency has not already been added to avoid duplicates
-    if (!currenciesArray.some(c => c.code === currencyCode)) {
-        // Add the currency information to the array
-        currenciesArray.push({
-            code: currencyCode,
-            text: `${currency.name} (${currency.symbol_native})`
+    // Sort the currencies array alphabetically based on the text
+    currenciesArray.sort((a, b) => a.text.localeCompare(b.text));
+
+    // Iterate over the sorted array to create option elements
+    currenciesArray.forEach(currency => {
+        const option = document.createElement('option');
+        option.value = currency.code;
+        option.textContent = currency.text;
+        currencySelectElement.appendChild(option);
+    });
+
+    
+    // Add event listener to each checkbox for toggling "Other" certifications input
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Check if the changed checkbox is the one with the id "Other"
+            if (this.id === 'Other') {
+                const otherCertsDiv = document.getElementById('otherCertsDiv');
+                // Toggle the visibility of "Other" certifications input based on the checked status of the "Other" checkbox
+                if (this.checked) {
+                    otherCertsDiv.classList.remove('hidden');
+                } else {
+                    otherCertsDiv.classList.add('hidden');
+                }
+            }
         });
-    }
-});
-
-// Sort the currencies array alphabetically based on the text
-currenciesArray.sort((a, b) => a.text.localeCompare(b.text));
-
-// Iterate over the sorted array to create option elements
-currenciesArray.forEach(currency => {
-    const option = document.createElement('option');
-    option.value = currency.code;
-    option.textContent = currency.text;
-    currencySelectElement.appendChild(option);
-});
-
-
-document.querySelectorAll('.form-control').forEach(function(input) {
-    input.dataset.clickCount = 0; // Initialize a click count
-
-    input.addEventListener('click', function(event) {
-      // Increment the click count
-      event.target.dataset.clickCount++;
-
-      // Check if the click count is even
-      if (event.target.dataset.clickCount % 2 === 0) {
-        // Remove the focus class on even clicks
-        event.target.classList.remove('focus');
-        event.target.blur(); // Optionally remove actual focus
-      } else {
-        // Add the focus class on odd clicks
-        event.target.classList.add('focus');
-      }
     });
 
-    input.addEventListener('blur', function(event) {
-      // Reset click count on blur to prevent desync
-      event.target.dataset.clickCount = 0;
-    });
-  });
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const certYes = document.getElementById('certYes');
-    const certNo = document.getElementById('certNo');
-    const additionalCerts = document.getElementById('additionalCerts');
-
-    certYes.addEventListener('click', function() {
-        additionalCerts.classList.remove('hidden');
-    });
-
-    certNo.addEventListener('click', function() {
-        additionalCerts.classList.add('hidden');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
+    // Add event listener to the country select for populating states and currencies
     const countrySelect = document.getElementById('country');
     const stateSelect = document.getElementById('state');
-    const currencySelect = document.getElementById('currency'); // Ensure you have this select element in your HTML
-
+    const currencySelect = document.getElementById('currency');
     const statesByCountry = {
-        'United States': unitedStates, // Ensure these arrays are defined with state names
+        'United States': unitedStates,
         'Australia': australiaStates,
         'Canada': canadaStates
     };
 
-document.addEventListener('DOMContentLoaded', function() {
-    const certificationContainer = document.getElementById('certificationContainer');
-    const otherCertsInput = document.getElementById('otherCerts');
-    const otherCertsDiv = document.getElementById('otherCertsDiv');
-    const otherCertsLabel = document.querySelector("label[for='otherCerts']");
-
-    // Function to toggle visibility of the input, label, and div for "Other" certifications
-    function toggleOtherCertificationsInput(event) {
-        // Since the target element could be the dynamically generated checkbox with id "Other",
-        // we check if the event's target matches that condition.
-        if (event.target.id === 'Other' && event.target.type === 'checkbox') {
-            // If the "Other" checkbox is checked, show the elements
-            if (event.target.checked) {
-                otherCertsInput.classList.remove('hidden');
-                otherCertsLabel.classList.remove('hidden');
-                otherCertsDiv.classList.remove('hidden');
-            } else {
-                // If unchecked, hide them
-                otherCertsInput.classList.add('hidden');
-                otherCertsLabel.classList.add('hidden');
-                otherCertsDiv.classList.add('hidden');
-            }
-        }
-    }
-
-    // Use event delegation to handle the checkbox change event
-    certificationContainer.addEventListener('change', toggleOtherCertificationsInput);
-});
-
-    countrySelect.addEventListener('change', function () {
-        const selectedCountryCode = this.value; // this.value is the country code in lowercase
+    countrySelect.addEventListener('change', function() {
+        const selectedCountryCode = this.value.toLowerCase();
         const selectedCountryName = this.options[this.selectedIndex].text;
 
         // Clear previous state options
@@ -4354,7 +4297,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Populate states
         const states = statesByCountry[selectedCountryName];
         if (states) {
-            states.forEach(function (state) {
+            states.forEach(function(state) {
                 const option = new Option(state.name, state.name);
                 stateSelect.add(option);
             });
@@ -4375,3 +4318,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
